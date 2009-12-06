@@ -1,0 +1,235 @@
+<html>
+<title>Currently in the 'pu' branch</title>
+<style type="text/css" media="all">
+    body {
+      width: 600px;
+    }
+</style>
+<body>
+<h1>Currently in the 'pu' branch</h1>
+<p>The comment about each topic branch is taken from the latest
+<em>What's cooking in erlang/otp</em> email and may no longer apply if
+the topic branch has been updated.
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/ee0ef00fa61204fa81d6cca7230fa92a58320527">gc/gen-format-status-improvements</a> (stdlib):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/95ed86fc9893460751c5141ff872bdc13814a273">Fix format_status bug for unregistered gen_event processes</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/c5bf60f34798b62827e469ce6e1db86dca0f5eb4">pg/fix-segfault-on-crash_dump-with-hipe</a> (erts):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/089e48ca0c0486393dd1e886aa18fc4b870b1e32">Fix a bug that could produce a segmentation fault when dumping the crash log with hipe enabled and natively compiled modules</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/6a2a3d2619f6950a016922d60d394a8f7e3a2131">pg/optimize_beam_dict_string_table</a> (compiler):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/cc1e0b4f26debb07c5f2682d5dd2e5170cda3929">Optimize string table generation for beams</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/99d76c1eb2fca5acdef17a3af0723541c09b9736">sa/callback-attr</a> (compiler, inets, kernel, stdlib):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/b7d428e5510c9f118470e054152eb4f583e90920">Add callback specs into 'application' module in kernel</a></li>
+<li><a href="http://github.com/erlang/otp/commit/2e8516fb593a22dbaf8a0760355fef17c82bce85">Add callback specs to tftp module following internet documentation</a></li>
+<li><a href="http://github.com/erlang/otp/commit/45aaeb87cf578fe8d3f1ac7142784c88767839f5">Add callback specs to inets_service module following possibly deprecated comments</a></li>
+<li><a href="http://github.com/erlang/otp/commit/3fc32b34f193b7844aee4a828d7654cf578c364e">Add '-callback' attributes in stdlib's behaviours</a></li>
+<li><a href="http://github.com/erlang/otp/commit/7b891523be0fbf60dde8351f128fc8537cf11f28">Automatical generation of 'behaviour_info' function from '-callback' attributes</a></li>
+<li><a href="http://github.com/erlang/otp/commit/3ccb12daca0b145124a35ac582e7c243e5e4790c">Add '-callback' attribute to language syntax</a></li>
+</ul>
+<p>We have having difficulties fiding the time to review this change properly
+for the R14B release, which is a pity since it should come in a major release...
+It will probably have to be included later.
+
+<p>
+</li>
+<li><a href="http://github.com/erlang/otp/commit/f7cb1213882218389105fabd4e3024f54dd58156">pg/hipe_crash_with_on_load</a> (erts):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/495804b097aea4015e218d7b5da8d1372395580c">Fix crash when calling functions in a module with an on_load attribute from a native module</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/71bbddfb7f9ff9c2a99f43d92a0b80d8b47dd2a4">mk/net-dragonfly-bsd-patches</a> (asn1, common_test, erl_interface, erts, et, gs, mnesia, odbc, reltool, runtime_tools, test_server, wx):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/dab5af5478f9fb6ed0101f027611a0a6d38e498a">Remove unused variables</a></li>
+<li><a href="http://github.com/erlang/otp/commit/82dcc82b95f726e5ff5463a741ca9c3a3bdfcecf">Do not hardcode browser name</a></li>
+<li><a href="http://github.com/erlang/otp/commit/c86dff55443175bae395997601319c1e6e840e98">Make sure the odbcserver binary finds the ODBC library at run-time</a></li>
+<li><a href="http://github.com/erlang/otp/commit/7142d5289c74c7efa76f89790df7047aaebb6c89">Use xxx(void) instead of xxx()</a></li>
+<li><a href="http://github.com/erlang/otp/commit/5314ae63ec9e6f7969a12240a0ea229efdb7e060">Use proper install method</a></li>
+<li><a href="http://github.com/erlang/otp/commit/03baa22f72d4e72ebd400357745d1df982af8464">Add support for DragonFly BSD</a></li>
+<li><a href="http://github.com/erlang/otp/commit/6b72959142e6530be4158de0cb71d406920d6bc4">Add support for NetBSD</a></li>
+</ul>
+<p>We are investigating if finding ODBC run-time library (c86dff5)
+is done the right(tm) way, otherwise it seems fine...
+
+<p>
+</li>
+<li><a href="http://github.com/erlang/otp/commit/6f3a9d75bf8fcd7d103bcd732c05051334092b31">sf/erts_de_busy_limit</a> (erts):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/57c0eaf037b1d97ba8340851bd4df7238c6c807a">Add flag-based setting for 'erts_de_busy_limit' constant</a></li>
+</ul>
+<p> . Add flag-based setting for 'erts_de_busy_limit' constant (b584553)
+
+<p>
+</li>
+<li><a href="http://github.com/erlang/otp/commit/b7bcd9f5f3c3032939b37271516c30f8777467a3">pg/honor-start-type-in-rel-files</a> (sasl):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/759990082fe2a6da918ddb9e8cbc14f68acaf242">Honor start type in .rel files when building relup files</a></li>
+</ul>
+<p> . Honor start type in .rel files when building relup files (7f0192d)
+
+<p>This change is too big to make it into the R14A -> R14B release.
+It will have to be included later.
+
+<p>
+</li>
+<li><a href="http://github.com/erlang/otp/commit/67cfdc38dbeec8f96c7e91064f82777a28c99af1">sb/make-files-like-erlc</a> (tools):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/5e9d05198cd00f74b99f697eb022ae0b2f31f136">Change make:files to behave more like erlc</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/2009b7af72b46fec0e57a6837b98a1f331e2cc0a">jn/gen_stream</a> (stdlib):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/65f3db8de97410d3d683dbbc9419ba975232ad46">Add new gen_stream behaviour for efficiently consuming serial streams</a></li>
+</ul>
+<p> . Add new gen_stream behaviour for efficiently consuming serial streams (65f3db8)
+
+<p>This topic branch has failing test cases. 
+
+<p>shell_SUITE:start_restricted_from_shell;
+    We have now tested with and without this topic branch and when
+    it is present that test case fails. We consider it proved
+    to be guilty. The test case does not fail when run standalone
+    so it seems to be tricky... Also, some of its own test cases
+    fail sporadicly apparently since the assumption there shoul
+    be no more processes after the test case does not hold;
+    probably a timing issue.
+
+<p>Action expected from: Topic author.
+
+<p>
+
+</li>
+<li><a href="http://github.com/erlang/otp/commit/7ba2cc788cd0a77b1b437999ce23c2f35fc7a6bf">uw/epmd-fullnames</a> (kernel):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/e0774bee2b75c56daa7288edc990488fa5c8d07e">Allow the erlang nodename host part to differ from the hostname</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/93ba8ec1265eff7ab793c4bbd96ac570bdb669c1">jr/cover-src-path</a> (tools):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/b9d5068e78fac922a2e80af9973de24297a2140b">Fix searching for source files in analyse_to_file/*</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/954f4ebb224e97ebdcc6078a432028a5ce6876ba">ta/asn1-reporting</a> (asn1):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/93face25db7222e5c0e4950caaa8acbf6d9bc2dc">asn1ct: Make formatting of errors and warnings consistent</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/495566cc10d11ddf46f8ff4bbea080ddfc74e700">er/ei-decode_msg</a> (erl_interface):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/864091a37030eac122b4029377c05985338586fb">Add function to decode distribution header</a></li>
+</ul>
+<p>Needs documentation and test cases.
+
+<p>Action expected from: Topic author
+
+<p>
+</li>
+<li><a href="http://github.com/erlang/otp/commit/b013f36d92b8688621b4aab98f2a7ff464489167">jf/run_erl-disable-flow-control</a> (erts):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/d0775cd6bc64f5eec41d04e04441fe6a6e058927">Teach run_erl RUN_ERL_DISABLE_FLOWCNTRL for disabling flow control</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/685b88232c728b534cbc0e178f7c3d4f1d54e3a4">bg/safer-local_to_univ</a> (erts):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/0f62f0b532013f69b7140e9bf3a4ea62dc0a4de7">erl_time_sup.c: test for error return from mktime()</a></li>
+</ul>
+<p>We will not include this branch in R13B04 for two reasons:
+
+<p>  o We are not 100% sure that this change is harmless on all
+    platforms in all timezones.
+  o We have a better solution for the underlying problem
+    in the pipeline soon to surface in 'dev'.
+
+<p>Action expected from: OTP Team
+
+<p>
+</li>
+<li><a href="http://github.com/erlang/otp/commit/ee9b052455b3dec1c1b35ca60a5da90837675110">kr/gs-browser</a> (gs):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/802d15915daf790b4ff60543526ba61283933ead">Change lib/gs/src/tool_utils.erl to select multiple browsers other than Netscape</a></li>
+</ul>
+<p>This topic branch introduces a new call to the deprecated regexp module.
+
+<p>Action expected from: Topic author or anyone else with an interest to
+advance the topic
+
+<p>
+</li>
+<li><a href="http://github.com/erlang/otp/commit/775c7c91f39906e1eb312578b7a29ee679346052">bg/temp-hipe-fixes</a> (compiler, hipe, kernel):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/234e13ea60502a14f42e696778ca09ed034e8879">Avoid crash by skipping compilation_SUITE:on_load/1</a></li>
+<li><a href="http://github.com/erlang/otp/commit/9fcb48b75a27cd9d2d245b263d2c7519e12c31db">Inline less aggressively for native-code compilation</a></li>
+<li><a href="http://github.com/erlang/otp/commit/ef71597b2ff78a1b87e56fd5df4221db178915eb">Crudely fix return type for the lists:key{search,find,member}/3</a></li>
+<li><a href="http://github.com/erlang/otp/commit/2a81b1afaa5d3b401d8b4a551da850de347309f0">seq_trace_SUITE: Don't native-compile</a></li>
+<li><a href="http://github.com/erlang/otp/commit/3befa76d1e24108acb5cb757157c2fb3384a8e51">Disable native code if on_load is used</a></li>
+<li><a href="http://github.com/erlang/otp/commit/97aa2daffc9824c88d7c7152b614408a1372261c">andor_SUITE: Don't native-compile</a></li>
+</ul>
+<p>This branch contains temporary workarounds to avoid failing test
+cases and is never intended to graduate.
+
+<p>
+</li>
+<li><a href="http://github.com/erlang/otp/commit/d6ff645eace166bcdbf5c026314b2f5df7576c15">jp/dependencies_makefile</a> (compiler, erts):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/434e2ca3a238fe07bcd327ace4d90618511a98b4">squash! eliminate dialyzer warning</a></li>
+<li><a href="http://github.com/erlang/otp/commit/bf2708d3b92705320679c51ace9d2c208d779298">squash! fix snprintf for Windows</a></li>
+<li><a href="http://github.com/erlang/otp/commit/7cbc4374a3621e26067c187ce36d3e75dfa70873">Add dependencies Makefile generation to erlc(1) and compile(3)</a></li>
+</ul>
+<p>Approved in principle by the OTP Technical Board; now awaits a closer
+review of the implementation.
+
+<p>Action expected from: Björn Gustavsson (the reviewer)
+
+<p>
+</li>
+<li><a href="http://github.com/erlang/otp/commit/9a955f3b2a4b03a816b707caabe3a27fea58d2ae">db/tv_nthtail_fix</a> (tv):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/28f1e36e5e8b578846677ad54ef90ebe89d6d87d">Fix for tv which restarts while trying to open a table</a></li>
+</ul>
+<p>Since our long-term goal is to migrate from gs towards wx,
+maintaining the old gs applications has a low priority for
+the Erlang/OTP team. Therefore, we will accept patches that
+seem sound, but we are unlikely to spend much of our own time
+fixing bugs.
+
+<p>The author of this topic branch has found the real reason for
+the problem, but uncovered additional issues.
+
+<p>Action expected from: The topic author - to decide whether to
+include the topic branch (which is a workaround, but does eliminate
+the crash) or to wait for a better fix from himself or someone else
+with an interest to advance the topic.
+
+<p>
+</li>
+</ul>
+</body>
+</html>
