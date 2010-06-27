@@ -336,9 +336,12 @@ BIF_RETTYPE finish_after_on_load_2(BIF_ALIST_2)
 	    if (ep != NULL &&
 		ep->code[0] == BIF_ARG_1 &&
 		ep->code[4] != 0) {
+		/* the fixed address is in ep->code[4], see final_touch in beam_load */
 		ep->address = (void *) ep->code[4];
-		ep->code[3] = 0;
-		ep->code[4] = 0;
+		/* any hipe stub to this function points to ep->code[3], which in turn
+		is em_call_error_handler (to load the module). Since the function is
+		loaded, we can jump to it directly with em_call_from_hipe_stub */
+		ep->code[3] = em_call_from_hipe_stub;
 	    }
 	}
 	modp->code[MI_ON_LOAD_FUNCTION_PTR] = 0;

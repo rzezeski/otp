@@ -45,11 +45,12 @@ typedef struct export
      * code[3]: This entry is 0 unless the 'address' field points to it.
      *          Threaded code instruction to load function
      *		(em_call_error_handler), execute BIF (em_apply_bif,
-     *		em_apply_apply), or call a traced function
-     *		(em_call_traced_function).
+     *		em_apply_apply), call a traced function
+     *		(em_call_traced_function) or call a loaded function (for hipe stub
+     *      of on_load modules).
      * code[4]: Function pointer to BIF function (for BIFs only)
      *		or pointer to threaded code if the module has an
-     *		on_load function that has not been run yet.
+     *		on_load function.
      *		Otherwise: 0.
      */
     BeamInstr code[5];

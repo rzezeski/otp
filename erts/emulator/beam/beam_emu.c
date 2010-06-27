@@ -221,6 +221,7 @@ BeamInstr beam_continue_exit[1];
 BeamInstr* em_call_error_handler;
 BeamInstr* em_apply_bif;
 BeamInstr* em_call_traced_function;
+BeamInstr* em_call_from_hipe_stub;
 
 
 /* NOTE These should be the only variables containing trace instructions.
@@ -3043,6 +3044,22 @@ void process_main(void)
      goto post_error_handling;
  }
 
+    /*
+     * At this point, I points to the code[3] in the export entry for
+     * a loaded function with a hipe stub.
+     *
+     * code[0]: Module
+     * code[1]: Function
+     * code[2]: Arity
+     * code[3]: &&call_from_hipe_stub
+     * code[4]: Address of function.
+     */
+ OpCase(call_from_hipe_stub): {
+     /* We might want to fix the stub (?) to earn few cycles */
+     SET_I((BeamInstr *)Arg(0));
+     Goto(*I);
+ }
+
  OpCase(call_error_handler):
     /*
      * At this point, I points to the code[3] in the export entry for
@@ -5034,6 +5051,7 @@ apply_bif_or_nif_epilogue:
      em_call_error_handler = OpCode(call_error_handler);
      em_call_traced_function = OpCode(call_traced_function);
      em_apply_bif = OpCode(apply_bif);
+     em_call_from_hipe_stub = OpCode(call_from_hipe_stub);
 
      beam_apply[0]             = (BeamInstr) OpCode(i_apply);
      beam_apply[1]             = (BeamInstr) OpCode(normal_exit);

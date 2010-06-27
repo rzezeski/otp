@@ -66,6 +66,7 @@ MODULES= \
 	guard_SUITE \
 	hash_SUITE \
 	hibernate_SUITE \
+	hipe_SUITE \
 	list_bif_SUITE \
 	match_spec_SUITE \
 	module_info_SUITE \
