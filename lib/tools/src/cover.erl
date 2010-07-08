@@ -1831,28 +1831,54 @@ move_clauses([]) ->
     ok.
 			  
 
-%% Given a .beam file, find the .erl file. Look first in same directory as
-%% the .beam file, then in <beamdir>/../src
+%% Given a .beam file, find the .erl file. Look first in the path referenced
+%% by the beam's  abstract code info, then in the same directory as the .beam
+%% file, then in <beamdir>/../src
 find_source(File0) ->
-    case filename:rootname(File0,".beam") of
-	File0 ->
-	    File0;
-	File ->
-	    InSameDir = File++".erl",
-	    case filelib:is_file(InSameDir) of
-		true -> 
-		    InSameDir;
-		false ->
-		    Dir = filename:dirname(File),
-		    Mod = filename:basename(File),
-		    InDotDotSrc = filename:join([Dir,"..","src",Mod++".erl"]),
-		    case filelib:is_file(InDotDotSrc) of
+    case path_in_beam(File0) of
+	{ok,Path} ->
+	    Dir = filename:dirname(File0),
+	    filename:join(Dir, Path);
+	error ->
+	    case filename:rootname(File0, ".beam") of
+		File0 ->
+		    File0;
+		File ->
+		    InSameDir = File++".erl",
+		    case filelib:is_file(InSameDir) of
 			true ->
-			    InDotDotSrc;
+			    InSameDir;
 			false ->
-			    {beam,File0}
+			    Dir = filename:dirname(File),
+			    Mod = filename:basename(File),
+			    InDotDotSrc = filename:join(
+					    [Dir,"..","src",Mod++".erl"]),
+			    case filelib:is_file(InDotDotSrc) of
+				true ->
+				    InDotDotSrc;
+				false ->
+				    {beam,File0}
+			    end
 		    end
 	    end
+    end.
+
+path_in_beam(File) ->
+    case beam_lib:chunks(File, [abstract_code]) of
+	{ok,{_Module,[{abstract_code,{_AbstVersion,Forms}}]}} ->
+	    case [File1 || {attribute,1,file,{File1,_Line1}} <- Forms] of
+		[] ->
+		    error;
+                [MainFile|_] ->
+		    case filelib:is_file(MainFile) of
+			true ->
+			    {ok,MainFile};
+			false ->
+			    error
+		    end
+	    end;
+	{error,beam_lib,_Reason} ->
+	    error
     end.
 
 %% do_analyse(Module, Analysis, Level, Clauses)-> {ok,Answer} | {error,Error}
