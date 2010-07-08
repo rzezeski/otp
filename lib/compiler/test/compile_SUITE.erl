@@ -28,7 +28,7 @@
 	 binary/1, makedep/1, cond_and_ifdef/1, listings/1, listings_big/1,
 	 other_output/1, package_forms/1, encrypted_abstr/1,
 	 bad_record_use/1, bad_record_use1/1, bad_record_use2/1, strict_record/1,
-	 missing_testheap/1, cover/1, env/1, core/1, asm/1]).
+	 missing_testheap/1, cover/1, env/1, core/1, asm/1, string_table/1]).
 
 -export([init/3]).
 
@@ -45,7 +45,7 @@ all(suite) ->
      other_output, package_forms,
      encrypted_abstr,
      bad_record_use, strict_record,
-     missing_testheap, cover, env, core, asm].
+     missing_testheap, cover, env, core, asm, string_table].
 
 
 %% Test that the Application file has no `basic' errors.";
@@ -758,3 +758,13 @@ do_asm(Beam, Outdir) ->
 		      [M,Class,Error,erlang:get_stacktrace()]),
 	    error
     end.
+
+%% Check the generation of the string table.
+
+string_table(Config) when is_list(Config) ->
+    ?line DataDir = ?config(data_dir, Config),
+    ?line File = filename:join(DataDir, "string_table.erl"),
+    ?line {ok, string_table, Beam, []} = compile:file(File, [return, binary]),
+    ?line {ok, {string_table, [StringTableChunk]}} = beam_lib:chunks(Beam, ["StrT"]),
+    ?line {"StrT", <<"stringabletringtable">>} = StringTableChunk,
+    ok.
