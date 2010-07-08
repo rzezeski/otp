@@ -66,12 +66,12 @@ select(Node) ->
 %% node is accessible through.
 %% ------------------------------------------------------------
 
-listen(Name) ->
+listen(Node) ->
     case inet6_tcp:listen(0, [{active, false}, {packet,2}]) of
         {ok, Socket} ->
             TcpAddress = get_tcp_address(Socket),
             {_,Port} = TcpAddress#net_address.address,
-            {ok, Creation} = erl_epmd:register_node(Name, Port),
+            {ok, Creation} = erl_epmd:register_node(Node, Port),
             {ok, {Socket, TcpAddress, Creation}};
         Error ->
             Error
@@ -215,11 +215,11 @@ setup(Node, Type, MyNode, LongOrShortNames,SetupTime) ->
 
 do_setup(Kernel, Node, Type, MyNode, LongOrShortNames,SetupTime) ->
     ?trace("~p~n",[{?MODULE,self(),setup,Node}]),
-    [Name, Address] = splitnode(Node, LongOrShortNames),
+    [_Name, Address] = splitnode(Node, LongOrShortNames),
     case inet:getaddr(Address, inet6) of
         {ok, Ip} ->
             Timer = dist_util:start_timer(SetupTime),
-            case erl_epmd:port_please(Name, Ip) of
+            case erl_epmd:port_please(Node, Ip) of
                 {port, TcpPort, Version} ->
                     ?trace("port_please(~p) -> version ~p~n", 
                            [Node,Version]),

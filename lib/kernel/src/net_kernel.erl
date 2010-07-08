@@ -1279,7 +1279,7 @@ start_protos(Name,Ps, Node) ->
 
 start_protos(Name, [Proto | Ps], Node, Ls) ->
     Mod = list_to_atom(Proto ++ "_dist"),
-    case catch Mod:listen(Name) of
+    case catch Mod:listen(Node) of
 	{ok, {Socket, Address, Creation}} ->
 	    case set_node(Node, Creation) of
 		ok ->

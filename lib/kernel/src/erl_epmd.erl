@@ -141,8 +141,8 @@ handle_call({register, Name, PortNo}, _From, State) ->
     end;
 
 handle_call(client_info_req, _From, State) ->
-    Reply = {ok,{r4,State#state.name,State#state.port_no}},
-    {reply, Reply, State};
+  Reply = {ok,{r4,State#state.name,State#state.port_no}},
+  {reply,Reply,State};
   
 handle_call(stop, _From, State) ->
     {stop, shutdown, ok, State}.
@@ -214,7 +214,7 @@ close(Socket) ->
 do_register_node_v0(NodeName, TcpPort) ->
     case open() of
 	{ok, Socket} ->
-	    Name = cstring(NodeName),
+	    Name = split(cstring(NodeName)),
 	    Len = 1+2+length(Name),
 	    gen_tcp:send(Socket, [?int16(Len), ?EPMD_ALIVE,
 				  ?int16(TcpPort), Name]),
@@ -226,7 +226,7 @@ do_register_node_v0(NodeName, TcpPort) ->
 do_register_node(NodeName, TcpPort) ->
     case open() of
 	{ok, Socket} ->
-	    Name = to_string(NodeName),
+	    Name = maybe_split(to_string(NodeName)),
 	    Extra = "",
 	    Elen = length(Extra),
 	    Len = 1+2+1+1+2+2+2+length(Name)+2+Elen,
@@ -328,7 +328,7 @@ wait_for_reg_reply_v0(Socket, SoFar) ->
 get_port_v0(Node, EpmdAddress) ->
     case open(EpmdAddress) of
 	{ok, Socket} ->
-	    Name = cstring(Node),
+	    Name = split(cstring(Node)),
 	    Len = 1+length(Name),
 	    gen_tcp:send(Socket, [?int16(Len),?EPMD_PORT_PLEASE, Name]),
 	    wait_for_port_reply_v0(Socket, []);
@@ -342,22 +342,40 @@ get_port_v0(Node, EpmdAddress) ->
 %%%     get_port(Node, EpmdAddress, infinity).
 
 get_port(Node, EpmdAddress, Timeout) ->
+    NodeStr = to_string(Node),
+    Name = maybe_split(NodeStr),
+    get_port(Name, Name == NodeStr, Node, EpmdAddress, Timeout).
+
+get_port(Name, FullName, Node, EpmdAddress, Timeout) ->
     case open(EpmdAddress, Timeout) of
 	{ok, Socket} ->
-	    Name = to_string(Node),
-	    Len = 1+length(Name),
-	    gen_tcp:send(Socket, [?int16(Len),?EPMD_PORT_PLEASE2_REQ, Name]),
-	    Reply = wait_for_port_reply(Socket, []),
-	    case Reply of
-		closed ->
-		    get_port_v0(Node, EpmdAddress);
-		Other ->
-		    Other
+	    case Res = get_port1(Socket, Name, Node, EpmdAddress) of
+		noport when FullName ->
+		    case split(Name) of
+			Name1 when Name1 =/= Name ->
+			    get_port(Name1, true, Node, EpmdAddress, Timeout);
+			_ ->
+			    Res
+		    end;
+		_ ->
+		    Res
 	    end;
 	_Error -> 
 	    ?port_please_failure2(_Error),
 	    noport
     end.
+
+get_port1(Socket, Name, Node, EpmdAddress) ->
+    Len = 1+length(Name),
+    gen_tcp:send(Socket, [?int16(Len),?EPMD_PORT_PLEASE2_REQ, Name]),
+    Reply = wait_for_port_reply(Socket, []),
+    case Reply of
+	closed ->
+	    get_port_v0(Node, EpmdAddress);
+	Other ->
+	    Other
+    end.
+
 
 wait_for_port_reply_v0(Socket, SoFar) ->
     receive
@@ -492,6 +510,19 @@ cstring(S) when is_list(S) -> S ++ [0].
 
 to_string(S) when is_atom(S) -> atom_to_list(S);
 to_string(S) when is_list(S) -> S.
+
+maybe_split(NodeStr) ->
+    case init:get_argument(epmd_fullnames) of
+	{ok, [["true"|_]]} ->
+	    NodeStr;
+	_ ->
+	    split(NodeStr)
+    end.
+
+split(NodeStr) ->
+    [Name|_] = re:split(NodeStr, "@", [{return,list}]),
+    Name.
+
 
 %%
 %% Find names on epmd
