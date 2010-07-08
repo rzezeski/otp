@@ -68,10 +68,10 @@
 #  define DRIVER_INIT(DRIVER_NAME)  driver_init
 #endif
 
-typedef int (*F_PTR)();    /* a function pointer */
-typedef long (*L_PTR)();   /* pointer to a function returning long */
+typedef int (*F_PTR)(void);    /* a function pointer */
+typedef long (*L_PTR)(void);   /* pointer to a function returning long */
 
-extern int null_func();
+extern int null_func(void);
 
 /* This structure MUST match Binary in global.h exactly!!! */
 typedef struct driver_binary {
